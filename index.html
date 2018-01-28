@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>瀑布流布局</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    .container{
+      max-width: 850px;
+      margin: 0 auto;
+      position: relative;
+      border: 1px solid #f4645f;
+    }
+    .item{
+      position: absolute;
+      width: 150px;
+      margin: 0 10px;
+      margin-top: 10px;
+      transition: all .6s;
+    }
+    .item-1{
+      height: 200px;
+      background-color: #458673;
+    }
+    .item-2{
+      height: 300px;
+      background-color: #257eb8;
+    }
+    .item-3{
+      height: 400px;
+      background-color: #777777;
+    }
+    .item-4{
+      height: 500px;
+      background-color: #cc2844;
+    }
+  </style>
+</head>
+
+<body>
+<div class="container">
+  <div class="item item-1"></div>
+  <div class="item item-2"></div>
+  <div class="item item-3"></div>
+  <div class="item item-4"></div>
+  <div class="item item-1"></div>
+  <div class="item item-1"></div>
+  <div class="item item-2"></div>
+  <div class="item item-3"></div>
+  <div class="item item-4"></div>
+  <div class="item item-1"></div>
+  <div class="item item-4"></div>
+  <div class="item item-1"></div>
+  <div class="item item-1"></div>
+  <div class="item item-2"></div>
+  <div class="item item-3"></div>
+</div>
+
+
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script>
+  $(function () {//start
+
+   // //用户刚进页面时 就开始 执行瀑布流
+   //  waterFull() 
+
+   //  // 当用户的屏幕尺寸发生变化的时候 继续执行waterfull
+   //  $(window).resize(function() {
+   //    waterFull() 
+   //    console.log('屏幕尺寸发生了变化！')
+   //  })
+
+
+/*
+
+    function waterFull() {
+
+        //一共有几列 别忘了取整 1·parseInt() 2·madth.floor()
+        var coluNum = parseInt($('.container').width()/$('.item').width())
+        //弄一个新数组
+        var newArr = []
+        //给数组进行初始化 每一项都等于 0
+        for(var i = 0; i<coluNum;i++){
+          newArr[i] = 0
+        }
+        //遍历每一个item
+        $('.item').each(function () {
+          //在新数组中找一个最小值 还有这个最小值的下标 Math.min.apply(Function,Args) 靠apply 借Math.min 方法一用
+          var minValue = Math.min.apply(Math,newArr)
+          //拿到数组中的最小值之后，也要拿到最小值的下标 indexOf() 方法
+          var minIndex = newArr.indexOf(minValue)
+          //把item固定到相应位置上
+          $(this).css({
+            top: newArr[minIndex],
+            //不加true的话就是 只是边框，加上true的话就是包括边框和外边距
+            left: $(this).outerWidth(true)*minIndex
+
+          })
+
+          newArr[minIndex] +=  $(this).outerHeight(true)
+
+        }) 
+    }
+
+*/
+
+//功能完成后的 包装工作 给予一定的封装性
+
+
+var WaterFull = (function () {
+
+  function init() {
+    //用户刚进页面时 就开始 执行瀑布流
+     waterFull() 
+    // 当用户的屏幕尺寸发生变化的时候 继续执行waterfull
+     $(window).resize(function() {
+       waterFull() 
+     })
+    
+  }
+
+  //主体功能
+   function waterFull() {
+        //一共有几列 别忘了取整 1·parseInt() 2·madth.floor()
+        var coluNum = parseInt( $('.container').width() / $('.item').width() )
+        //弄一个新数组
+        var newArr = []
+        //给数组进行初始化 每一项都等于 0
+        for(var i = 0; i < coluNum; i++){
+          newArr[i] = 0
+        }
+        //遍历每一个item
+        $('.item').each(function () { 
+          //在新数组中找一个最小值 还有这个最小值的下标 Math.min.apply(Function,Args) 靠apply 借Math.min 方法一用
+          var minValue = Math.min.apply(null,newArr)
+          //拿到数组中的最小值之后，也要拿到最小值的下标 indexOf() 方法
+          var minIndex = newArr.indexOf(minValue)
+          // console.log(minIndex)
+          //把item固定到相应位置上
+          $(this).css({
+            top: newArr[minIndex],
+            //不加true的话就是 只是边框，加上true的话就是包括边框和外边距
+            left: $(this).outerWidth(true)*minIndex
+
+          })
+          newArr[minIndex] +=  $(this).outerHeight(true)
+        }) 
+    }
+
+  return {
+    init:init
+  }
+
+  
+})()
+
+WaterFull.init()
+
+
+
+
+
+   
+  
+
+
+
+
+  })//end
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
